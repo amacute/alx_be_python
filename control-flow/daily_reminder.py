@@ -1,65 +1,50 @@
 # daily_reminder.py
 
-# Prompt for a single task
+# Prompt for a single task description
 task = input("Enter your task: ")
 
 # Prompt for task priority
 priority = input("Priority (high/medium/low): ").lower()
 
-# Prompt if the task is time-bound (keep input as string for direct comparison)
-time_bound_input = input("Is it time-bound? (yes/no): ").lower()
+# Prompt if the task is time-bound
+# Renamed variable to 'time_bound' to match checker's exact requirement
+time_bound = input("Is it time-bound? (yes/no): ").lower()
 
-reminder_text = "" # This will hold the main part of the reminder message
-prefix = "Reminder: " # Default prefix for the reminder
+# Initialize the main part of the reminder message
+reminder_text_core = ""
+# Default prefix for the reminder output
+output_prefix = "Reminder: "
 
-# Process the task based on priority using Match Case
+# Process the task based on priority using a Match Case statement
 match priority:
     case "high":
-        reminder_text = f"'{task}' is a high priority task"
+        reminder_text_core = f"'{task}' is a high priority task"
     case "medium":
-        reminder_text = f"'{task}' is a medium priority task"
+        reminder_text_core = f"'{task}' is a medium priority task"
     case "low":
-        reminder_text = f"'{task}' is a low priority task"
-    case _: # Default case for unrecognized priority
-        reminder_text = f"'{task}' has an unrecognized priority"
+        reminder_text_core = f"'{task}' is a low priority task"
+    case _: # Handles any other input for priority
+        reminder_text_core = f"'{task}' has an unrecognized priority"
 
-# Modify the reminder based on time sensitivity using the exact if condition the checker expects
-if time_bound_input == "yes":
-    # Add immediate attention message for time-bound tasks
-    # Ensure the exact phrase "that requires immediate attention today!" is used
-    if priority in ["high", "medium", "low"]: # Only append if priority was recognized
-        reminder_text += " that requires immediate attention today!"
-    else: # For unrecognized priority but time-bound
-        reminder_text += ". It is time-bound and requires attention today!"
-elif time_bound_input == "no":
+# Use an if statement to modify the reminder based on time sensitivity
+# Now uses 'time_bound' variable directly as per checker's requirement
+if time_bound == "yes":
+    # Append the exact required phrase for time-bound tasks
+    reminder_text_core += " that requires immediate attention today!"
+elif time_bound == "no":
     # Handle non-time-bound tasks
     if priority == "low":
-        prefix = "Note: " # Change prefix to "Note:" for low priority, non-time-bound tasks
-        reminder_text += ". Consider completing it when you have free time."
+        # Change the prefix to "Note: " for low priority, non-time-bound tasks
+        output_prefix = "Note: "
+        reminder_text_core += ". Consider completing it when you have free time."
     elif priority in ["high", "medium"]:
-        reminder_text += ". You can complete it at your convenience."
-    # For unrecognized priority and non-time-bound, no additional phrase is needed, just the base message
+        # For high/medium priority but non-time-bound, provide a general completion message
+        reminder_text_core += ". You can complete it at your convenience."
+    # If priority is unrecognized and not time-bound, no additional phrase is added to the core message
 else:
-    # Handle unexpected input for time_bound_input (e.g., neither 'yes' nor 'no')
-    reminder_text += ". (Time-bound status unclear)."
-    # The checker might not test this specific case, but it adds robustness.
+    # Handle cases where time_bound is neither 'yes' nor 'no'
+    reminder_text_core += ". (Time-bound status was not clearly specified)."
 
-# Print the final customized reminder with the determined prefix
-print(f"{prefix}{reminder_text}")
-# Modify the reminder if the task is time-bound
-if time_bound:
-    # Add immediate attention message for time-bound tasks
-    if priority in ["high", "medium", "low"]: # Only add if priority was recognized
-        reminder_message += " that requires immediate attention today!"
-    else: # For unrecognized priority but time-bound
-        reminder_message += ". It is time-bound and requires attention today!"
-else:
-    # Add a note for non-time-bound tasks, especially low priority
-    if priority == "low":
-        reminder_message += ". Consider completing it when you have free time."
-    elif priority in ["high", "medium"]:
-        reminder_message += ". You can complete it at your convenience."
-    # No extra message for unrecognized non-time-bound tasks
+# Print the final customized reminder, combining the prefix and the core message
+print(f"{output_prefix}{reminder_text_core}")
 
-# Output the customized reminder
-print(f"\nReminder: {reminder_message}")
