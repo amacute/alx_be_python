@@ -1,6 +1,6 @@
 # arithmetic_operations.py
 
-def perform_operation(num1: float, num2: float, operation: str):
+def perform_operation(num1, num2, operation):
     """
     Performs basic arithmetic operations based on the given numbers and operation.
 
@@ -27,6 +27,8 @@ def perform_operation(num1: float, num2: float, operation: str):
     else:
         # Handle invalid operation input
         return "Invalid operation." # Keep this concise as checker might not test this specifically
+
+
 
 
         else:
